@@ -21,10 +21,10 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/[bruker]/livets-stemme.git"
+    "url": "https://github.com/deanmartian/livets-stemme.git"
   },
   "bugs": {
-    "url": "https://github.com/[bruker]/livets-stemme/issues"
+    "url": "https://github.com/deanmartian/livets-stemme/issues"
   },
   "homepage": "https://same-qwc8draomtn-latest.netlify.app",
   "scripts": {
@@ -36,7 +36,7 @@
     "type-check": "tsc --noEmit",
     "prepare": "git config core.hooksPath .githooks || true",
     "git:init": "git init && git add . && git commit -m \"🎉 Initial commit: Livets Stemme v3.0\"",
-    "git:push": "git branch -M main && git remote add origin https://github.com/[bruker]/livets-stemme.git && git push -u origin main",
+    "git:push": "git branch -M main && git remote add origin https://github.com/deanmartian/livets-stemme.git && git push -u origin main",
     "setup:production": "./scripts/setup-production.sh",
     "deploy:vercel": "vercel",
     "deploy:vercel:prod": "vercel --prod",
