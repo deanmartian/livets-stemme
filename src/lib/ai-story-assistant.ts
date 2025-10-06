@@ -74,7 +74,7 @@ Format som JSON array med: question, followUp (array), cultural (boolean)`
 
       const prompts = JSON.parse(content)
 
-      return prompts.map((prompt: any, index: number) => ({
+      return prompts.map((prompt: { question: string; followUp?: string[]; cultural?: boolean }, index: number) => ({
         id: `${category}-${index}`,
         category,
         question: prompt.question,
