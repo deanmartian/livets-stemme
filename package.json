@@ -1,0 +1,84 @@
+{
+  "name": "livets-stemme",
+  "version": "3.0.0",
+  "description": "Digital minnearkiv for eldre brukere - Bevar livshistorier med AI-assistanse",
+  "private": false,
+  "keywords": [
+    "memory-archive",
+    "elderly-users",
+    "norwegian",
+    "voice-recording",
+    "ai-assistance",
+    "family-sharing",
+    "accessibility",
+    "digital-heritage"
+  ],
+  "author": {
+    "name": "Livets Stemme Team",
+    "email": "kontakt@livetsstemme.no",
+    "url": "https://livetsstemme.no"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/[bruker]/livets-stemme.git"
+  },
+  "bugs": {
+    "url": "https://github.com/[bruker]/livets-stemme/issues"
+  },
+  "homepage": "https://same-qwc8draomtn-latest.netlify.app",
+  "scripts": {
+    "dev": "next dev -H 0.0.0.0 --turbopack",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "lint:fix": "next lint --fix",
+    "type-check": "tsc --noEmit",
+    "prepare": "git config core.hooksPath .githooks || true",
+    "git:init": "git init && git add . && git commit -m \"🎉 Initial commit: Livets Stemme v3.0\"",
+    "git:push": "git branch -M main && git remote add origin https://github.com/[bruker]/livets-stemme.git && git push -u origin main",
+    "setup:production": "./scripts/setup-production.sh",
+    "deploy:vercel": "vercel",
+    "deploy:vercel:prod": "vercel --prod",
+    "preview": "vercel dev"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "^5.2.1",
+    "@supabase/supabase-js": "^2.53.0",
+    "date-fns": "^4.1.0",
+    "lucide-react": "^0.536.0",
+    "next": "15.3.2",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
+    "react-hook-form": "^7.62.0",
+    "uuid": "^11.1.0",
+    "zod": "^4.0.15"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@types/uuid": "^11.1.0",
+    "eslint": "^8",
+    "eslint-config-next": "15.3.2",
+    "postcss": "^8",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "bun": ">=1.0.0"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
