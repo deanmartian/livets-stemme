@@ -5,8 +5,14 @@
   "framework": "nextjs",
   "regions": ["arn1"],
   "functions": {
-    "app/api/**/*.ts": {
-      "maxDuration": 30
+    "src/app/api/**/*.ts": {
+      "maxDuration": 60
+    },
+    "src/app/api/ai/**/*.ts": {
+      "maxDuration": 120
+    },
+    "src/app/api/voice/**/*.ts": {
+      "maxDuration": 300
     }
   },
   "headers": [
@@ -28,6 +34,10 @@
         {
           "key": "Referrer-Policy",
           "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=63072000; includeSubDomains; preload"
         }
       ]
     },
@@ -44,7 +54,7 @@
         },
         {
           "key": "Access-Control-Allow-Headers",
-          "value": "Content-Type, Authorization"
+          "value": "Content-Type, Authorization, stripe-signature"
         }
       ]
     }
@@ -60,6 +70,14 @@
       "source": "/login",
       "destination": "/?login=true",
       "permanent": false
+    },
+    {
+      "source": "/signin",
+      "destination": "/?login=true",
+      "permanent": false
     }
-  ]
+  ],
+  "env": {
+    "NEXT_PUBLIC_VERCEL_URL": "@vercel-url"
+  }
 }

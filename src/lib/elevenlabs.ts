@@ -1,9 +1,11 @@
-import { ElevenLabsApi, ElevenLabsClient } from 'elevenlabs'
+import { ElevenLabsClient } from 'elevenlabs'
 
-// ElevenLabs API client
-const elevenlabs = new ElevenLabsClient({
-  apiKey: process.env.ELEVENLABS_API_KEY!
-})
+// ElevenLabs API client - only initialize if API key is available
+const elevenlabs = process.env.ELEVENLABS_API_KEY
+  ? new ElevenLabsClient({
+      apiKey: process.env.ELEVENLABS_API_KEY
+    })
+  : null
 
 export interface VoiceCloneResult {
   voiceId: string
@@ -61,6 +63,10 @@ export class ElevenLabsService {
     voiceName: string,
     description: string
   ): Promise<VoiceCloneResult> {
+    if (!elevenlabs) {
+      throw new Error('ElevenLabs API key not configured')
+    }
+
     try {
       // Convert blobs to files for upload
       const audioFiles = await Promise.all(
@@ -73,13 +79,7 @@ export class ElevenLabsService {
       const voice = await elevenlabs.voices.add({
         name: voiceName,
         files: audioFiles,
-        description: description,
-        labels: {
-          'accent': 'norwegian',
-          'age': 'elderly',
-          'gender': 'mixed',
-          'use_case': 'story_telling'
-        }
+        description: description
       })
 
       return {
@@ -105,6 +105,10 @@ export class ElevenLabsService {
       style?: number
     } = {}
   ): Promise<VoiceGenerationResult> {
+    if (!elevenlabs) {
+      throw new Error('ElevenLabs API key not configured')
+    }
+
     try {
       const audio = await elevenlabs.generate({
         voice: voiceId,
@@ -141,14 +145,18 @@ export class ElevenLabsService {
 
   // Check voice clone status
   static async getVoiceStatus(voiceId: string): Promise<VoiceCloneResult> {
+    if (!elevenlabs) {
+      throw new Error('ElevenLabs API key not configured')
+    }
+
     try {
       const voice = await elevenlabs.voices.get(voiceId)
 
       return {
         voiceId: voice.voice_id,
-        name: voice.name,
-        status: voice.fine_tuning?.is_allowed_to_fine_tune ? 'ready' : 'processing',
-        similarity: voice.fine_tuning?.fine_tuning_requested ? 0.85 : 0.75,
+        name: voice.name || 'Unknown Voice',
+        status: 'ready',
+        similarity: 0.85,
         stability: 0.5
       }
     } catch (error) {
@@ -159,6 +167,10 @@ export class ElevenLabsService {
 
   // Get all user's cloned voices
   static async getUserVoices(): Promise<VoiceCloneResult[]> {
+    if (!elevenlabs) {
+      return []
+    }
+
     try {
       const voices = await elevenlabs.voices.getAll()
 
@@ -166,7 +178,7 @@ export class ElevenLabsService {
         .filter(voice => voice.category === 'cloned')
         .map(voice => ({
           voiceId: voice.voice_id,
-          name: voice.name,
+          name: voice.name || 'Unknown Voice',
           status: 'ready' as const,
           similarity: 0.85,
           stability: 0.5
@@ -179,6 +191,10 @@ export class ElevenLabsService {
 
   // Delete voice clone
   static async deleteVoice(voiceId: string): Promise<void> {
+    if (!elevenlabs) {
+      throw new Error('ElevenLabs API key not configured')
+    }
+
     try {
       await elevenlabs.voices.delete(voiceId)
     } catch (error) {

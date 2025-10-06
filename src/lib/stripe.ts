@@ -155,7 +155,7 @@ export class StripeService {
         mode: 'subscription',
         success_url: successUrl,
         cancel_url: cancelUrl,
-        locale: 'no', // Norwegian locale
+        locale: 'nb', // Norwegian locale
         currency: 'nok',
         billing_address_collection: 'required',
         tax_id_collection: { enabled: true }, // For Norwegian tax numbers
@@ -214,7 +214,7 @@ export class StripeService {
         mode: 'payment',
         success_url: successUrl,
         cancel_url: cancelUrl,
-        locale: 'no',
+        locale: 'nb',
         currency: 'nok',
         metadata: {
           type: 'voice_cloning_credits',

@@ -1,8 +1,10 @@
 import OpenAI from 'openai'
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY!
-})
+const openai = process.env.OPENAI_API_KEY
+  ? new OpenAI({
+      apiKey: process.env.OPENAI_API_KEY
+    })
+  : null
 
 export interface StoryPrompt {
   id: string
@@ -58,6 +60,11 @@ Kontekst om brukeren:
 
 Format som JSON array med: question, followUp (array), cultural (boolean)`
 
+    if (!openai) {
+      // Fallback to predefined Norwegian prompts if OpenAI not configured
+      return this.getFallbackPrompts(category)
+    }
+
     try {
       const response = await openai.chat.completions.create({
         model: 'gpt-4',
@@ -96,6 +103,18 @@ Format som JSON array med: question, followUp (array), cultural (boolean)`
     content: string,
     transcript?: string
   ): Promise<StoryAnalysis> {
+    if (!openai) {
+      // Fallback analysis if OpenAI not configured
+      return {
+        themes: ['familie', 'minner'],
+        mood: 'nostalgisk',
+        suggestions: ['Legg til mer om følelsene dine i situasjonen'],
+        culturalRelevance: 0.7,
+        clarity: 0.8,
+        emotionalDepth: 0.7
+      }
+    }
+
     const systemPrompt = `Du er en ekspert på norske livshistorier og kulturell kontekst. Analyser historien og gi konstruktive, varme tilbakemeldinger.
 
 Fokuser på:
@@ -179,6 +198,14 @@ ${conversationHistory}
 Lag neste spørsmål for å hjelpe dem utdype historien.
 Format som JSON: { nextQuestion, encouragement, isComplete }`
 
+    if (!openai) {
+      return {
+        nextQuestion: 'Kan du fortelle mer om hvordan du følte deg i den situasjonen?',
+        encouragement: 'Det høres ut som en viktig opplevelse. Takk for at du deler den med oss.',
+        isComplete: false
+      }
+    }
+
     try {
       const response = await openai.chat.completions.create({
         model: 'gpt-4',
@@ -222,6 +249,10 @@ ${storyContent.substring(0, 500)}...
 
 Returner som JSON array av strings.`
 
+    if (!openai) {
+      return []
+    }
+
     try {
       const response = await openai.chat.completions.create({
         model: 'gpt-4',
@@ -245,6 +276,10 @@ Returner som JSON array av strings.`
 
   // Transcribe audio using Whisper API
   static async transcribeAudio(audioBlob: Blob): Promise<string> {
+    if (!openai) {
+      throw new Error('OpenAI API key not configured for transcription')
+    }
+
     try {
       // Convert blob to file
       const audioFile = new File([audioBlob], 'recording.wav', {

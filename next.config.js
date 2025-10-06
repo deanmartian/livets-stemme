@@ -1,10 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'export',
-  distDir: 'out',
-  allowedDevOrigins: ["*.preview.same-app.com"],
+  // Removed 'output: export' for Vercel compatibility with API routes
+  serverExternalPackages: ['sharp', 'onnxruntime-node'],
   images: {
-    unoptimized: true,
+    // Enable optimized images for Vercel
+    unoptimized: false,
     domains: [
       "source.unsplash.com",
       "images.unsplash.com",
@@ -33,6 +33,19 @@ const nextConfig = {
         pathname: "/**",
       },
     ],
+  },
+  // API routes configuration for Vercel
+  async headers() {
+    return [
+      {
+        source: '/api/(.*)',
+        headers: [
+          { key: 'Access-Control-Allow-Origin', value: '*' },
+          { key: 'Access-Control-Allow-Methods', value: 'GET,OPTIONS,PATCH,DELETE,POST,PUT' },
+          { key: 'Access-Control-Allow-Headers', value: 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version' },
+        ],
+      },
+    ]
   },
 };
 

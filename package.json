@@ -40,7 +40,10 @@
     "setup:production": "./scripts/setup-production.sh",
     "deploy:vercel": "vercel",
     "deploy:vercel:prod": "vercel --prod",
-    "preview": "vercel dev"
+    "preview": "vercel dev",
+    "vercel:env": "vercel env pull .env.local",
+    "vercel:build": "vercel build",
+    "vercel:deploy": "vercel --prod"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.1",
@@ -61,7 +64,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "@types/uuid": "^11.1.0",
+    "@types/uuid": "^10.0.0",
     "eslint": "^8",
     "eslint-config-next": "15.3.2",
     "postcss": "^8",
